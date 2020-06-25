@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+import model.Town;
 import model.TownCatalogModel;
 import view.TownCatalogGui;
 
@@ -19,8 +21,13 @@ public class TownCatalogController {
 		gui.startGui();
 	}
 	
-	public void ListTowns() {
-		model.sayHi();
+	public List<Town> ListTowns() {
+		return model.ListTowns();
+	}
+
+	public boolean addTown(Town t) {
+		return model.addTown(t);
+		
 	}
 
 }
