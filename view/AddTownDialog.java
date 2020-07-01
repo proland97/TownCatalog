@@ -63,6 +63,8 @@ public class AddTownDialog extends JDialog {
 			String name = townName.getText();
 			int funded = (int) townFunded.getValue();
 			
+			//validation
+			
 			Town t = new Town(name, funded);
 			
 			if(gui.getController().addTown(t)) {

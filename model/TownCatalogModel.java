@@ -1,40 +1,49 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TownCatalogModel {
 	
-	private List<Town> towns;
-
-	public List<Town> getTowns() {
-		return towns;
-	}
-
-	public void setTowns(List<Town> towns) {
-		this.towns = towns;
-	}
-
+	private Connection conn;
+	
 	public TownCatalogModel() {
-		towns = new ArrayList<>();
-		towns.add(new Town("Szabadka", 1852));
-		towns.add(new Town("Szeged", 1721));
+		
+		try {
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/towntest", "roland", "roland");
+			System.out.println("Database connected");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public List<Town> ListTowns() {
 		
-		return getTowns();
+		ArrayList<Town> list = new ArrayList<>();
+		ResultSet rs;
+		
+		try {
+			Statement stat = conn.createStatement();
+			rs = stat.executeQuery("SELECT * FROM towns");
+			
+			while(rs.next()) {
+				Town t = new Town(rs.getString("Name"), rs.getInt("Funded"));
+				list.add(t);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 
 	public boolean addTown(Town t) {
-		
-		try {
-			towns.add(t);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		
 		return true;
 	}
 
